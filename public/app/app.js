@@ -7,7 +7,6 @@ angular.module('myApp', [
     'ui.select',
     'ui.bootstrap',
     'mgcrea.ngStrap',
-    'gridstack-angular',
     'login',
     'dashboard',
     'details',
