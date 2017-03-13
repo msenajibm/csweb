@@ -33,8 +33,10 @@
                     </div>
                 </form>
                 <div class="row" ng-show="calculationResult.monthlyPayment">
-                    <div class="col-md-12">Monthly annuity is:</div>
-                    <div id="calculationResults">{{calculationResult.monthlyPayment | number:2}}</div>
+                    <div class="col-md-12">
+                        <p>Monthly annuity is:</p>
+                        <div id="calculationResults">{{calculationResult.monthlyPayment | number:2}}</div>
+                    </div>
                 </div>
             </div>
         </div>
