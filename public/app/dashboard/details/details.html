@@ -1,0 +1,329 @@
+<div class="row">
+    <div class="col-md-9 col-lg-9">
+        <div class="panel panel-primary">
+            <!-- Default panel contents -->
+            <div class="panel-heading">Device details</div>
+
+            <div class="panel-body">
+                <div class="row">
+                    <!-- TODO finish geolocation -->
+                    <div class="col-md-4">
+                        <ui-gmap-google-map center='map.center' zoom='map.zoom'>
+                            <ui-gmap-marker coords="marker.coords" idkey="marker.id">
+                            </ui-gmap-marker>
+                        </ui-gmap-google-map>
+                    </div>
+                    <div class="col-md-4"><img class="img-thumbnail" src="../../images/Product_Centex_001.jpg"></div>
+                    <div class="col-md-4">
+                        <h3>Device</h3>
+                        <div class="row device-detail-row">
+                            <div class="col-md-6">Device ID:</div>
+                            <div class="col-md-6">{{productId}}</div>
+                        </div>
+                        <div class="row device-detail-row">
+                            <div class="col-md-6">Type:</div>
+                            <div class="col-md-6">Cooler</div>
+                        </div>
+                        <div class="row device-detail-row">
+                            <div class="col-md-6">Production date:</div>
+                            <div class="col-md-6">2013/05/29</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-lg-3">
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="panel" ng-class="selectHealthPanelColor(productCurrent)">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Monitoring</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-4 col-md-offset-2">
+                                <span class="glyphicon glyphicon-heart" style="color: red; font-size: xx-large" aria-hidden="true"></span>
+                            </div>
+                            <div class="col-md-4">
+                                <h4>{{productCurrent.HEALTH_SCORE * 100|percentage}}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="panel panel-warning">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Alerts</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div ng-show="alerts.length < 1">
+                            No alerts
+                        </div>
+                        <div class="row" ng-hide="alerts.length < 1" ng-repeat="alert in alerts track by alert.id">
+                            <div class="col-md-12">
+                                when {{alert.key}} is {{alert.state}} {{alert.value}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="panel panel-warning">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Add alert</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p>Alert me when:</p>
+                                <p>
+                                    <select ng-model="alert.key" name="dimension"
+                                            ng-options="key for key in alertValues" >
+                                        <option value="">Key</option>
+                                    </select>
+                                </p>
+                                <p>is</p>
+                                <p>
+                                    <select ng-model="alert.state" name="alert"
+                                            ng-options="state for state in alertStates" >
+                                        <option value="">Operator</option>
+                                    </select>
+                                </p>
+                                <p>
+                                    <input ng-model="alert.value" type="number" placeholder="select number...">
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <input type="button" value="Add alert" class="btn btn-warning" ng-click="addAlert();">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- DRAG AND DROP - SORTABLE -->
+<div class="row">
+    <div class="col-md-12">
+        <select ng-model="time" name="alert" ng-init="time = timeBasis[0]"
+                ng-options="time.text for time in timeBasis" >
+        </select>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-lg-12">
+        <div class="panel panel-primary">
+            <!-- Default panel contents -->
+            <div class="panel-heading">Activity board</div>
+
+            <div class="panel-body">
+                <div gridstack class="grid-stack" options="options">
+                    <div gridstack-item class="grid-stack-item" gs-item-x="0" gs-item-y="0"
+                         gs-item-width="12" gs-item-height="1" gs-item-autopos="1">
+                        <div class="grid-stack-item-content">
+                            <div class="panel panel-default">
+                                <!-- Default panel contents -->
+                                <div class="panel-heading">Health score</div>
+                                <div class="panel-body">
+                                    <nvd3 options="HEALTH_SCORE.options" data="HEALTH_SCORE.data"></nvd3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div gridstack-item class="grid-stack-item" gs-item-x="0" gs-item-y="1"
+                         gs-item-width="6" gs-item-height="1" gs-item-autopos="1">
+                        <div class="grid-stack-item-content">
+                            <div class="panel panel-default">
+                                <!-- Default panel contents -->
+                                <div class="panel-heading">R Failue</div>
+                                <div class="panel-body">
+                                    <nvd3 options="R_FAILURE.options" data="R_FAILURE.data"></nvd3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div gridstack-item class="grid-stack-item" gs-item-x="1" gs-item-y="1"
+                         gs-item-width="6" gs-item-height="1" gs-item-autopos="1">
+                        <div class="grid-stack-item-content">
+                            <div class="panel panel-default">
+                                <!-- Default panel contents -->
+                                <div class="panel-heading">RC Failuer</div>
+                                <div class="panel-body">
+                                    <nvd3 options="RC_FAILURE.options" data="RC_FAILURE.data"></nvd3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div gridstack-item class="grid-stack-item" gs-item-x="0" gs-item-y="2"
+                         gs-item-width="6" gs-item-height="1" gs-item-autopos="1">
+                        <div class="grid-stack-item-content">
+                            <div class="panel panel-default">
+                                <!-- Default panel contents -->
+                                <div class="panel-heading">Energy</div>
+                                <div class="panel-body">
+                                    <nvd3 options="energy.options" data="energy.data"></nvd3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div gridstack-item class="grid-stack-item" gs-item-x="1" gs-item-y="2"
+                         gs-item-width="6" gs-item-height="1" gs-item-autopos="1">
+                        <div class="grid-stack-item-content">
+                            <div class="panel panel-default">
+                                <!-- Default panel contents -->
+                                <div class="panel-heading">Vibration</div>
+                                <div class="panel-body">
+                                    <nvd3 options="vibration.options" data="vibration.data"></nvd3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div gridstack-item class="grid-stack-item" gs-item-x="0" gs-item-y="3"
+                         gs-item-width="6" gs-item-height="1" gs-item-autopos="1">
+                        <div class="grid-stack-item-content">
+                            <div class="panel panel-default">
+                                <!-- Default panel contents -->
+                                <div class="panel-heading">Humidity</div>
+                                <div class="panel-body">
+                                    <nvd3 options="humidity.options" data="humidity.data"></nvd3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div gridstack-item class="grid-stack-item" gs-item-x="1" gs-item-y="3"
+                         gs-item-width="6" gs-item-height="1" gs-item-autopos="1">
+                        <div class="grid-stack-item-content">
+                            <div class="panel panel-default">
+                                <!-- Default panel contents -->
+                                <div class="panel-heading">Temperature</div>
+                                <div class="panel-body">
+                                    <nvd3 options="temperature.options" data="temperature.data"></nvd3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ORIGINAL and WORKING -->
+<!--<div class="row">-->
+    <!--<div class="col-md-12 col-lg-12">-->
+        <!--<div class="panel panel-primary">-->
+            <!--&lt;!&ndash; Default panel contents &ndash;&gt;-->
+            <!--<div class="panel-heading">Activity board</div>-->
+
+            <!--<div class="panel-body">-->
+                <!--<div class="row">-->
+                    <!--<div class="col-md-12">-->
+                        <!--<select ng-model="time" name="alert" ng-init="time = timeBasis[0]"-->
+                                <!--ng-options="time.text for time in timeBasis" >-->
+                        <!--</select>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="row">-->
+                    <!--<div class="col-md-12">-->
+                        <!--<div class="panel panel-default">-->
+                            <!--&lt;!&ndash; Default panel contents &ndash;&gt;-->
+                            <!--<div class="panel-heading">Health score</div>-->
+                            <!--<div class="panel-body">-->
+                                <!--&lt;!&ndash;<canvas class="chart chart-line" chart-data="HEALTH_SCORE.data"&ndash;&gt;-->
+                                        <!--&lt;!&ndash;chart-labels="HEALTH_SCORE.labels" chart-series="HEALTH_SCORE.series" chart-colours="HEALTH_SCORE.colours" >&ndash;&gt;-->
+                                <!--&lt;!&ndash;</canvas>&ndash;&gt;-->
+                                <!--<nvd3 options="HEALTH_SCORE.options" data="HEALTH_SCORE.data"></nvd3>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="row">-->
+                    <!--<div class="col-md-6">-->
+                        <!--<div class="panel panel-default">-->
+                            <!--&lt;!&ndash; Default panel contents &ndash;&gt;-->
+                            <!--<div class="panel-heading">R Failue</div>-->
+                            <!--<div class="panel-body">-->
+                                <!--&lt;!&ndash;<canvas class="chart chart-line" chart-data="R_FAILURE.data"&ndash;&gt;-->
+                                        <!--&lt;!&ndash;chart-labels="R_FAILURE.labels" chart-series="R_FAILURE.series" chart-colours="R_FAILURE.colours" >&ndash;&gt;-->
+                                <!--&lt;!&ndash;</canvas>&ndash;&gt;-->
+                                <!--<nvd3 options="R_FAILURE.options" data="R_FAILURE.data"></nvd3>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="col-md-6">-->
+                        <!--<div class="panel panel-default">-->
+                            <!--&lt;!&ndash; Default panel contents &ndash;&gt;-->
+                            <!--<div class="panel-heading">RC Failuer</div>-->
+                            <!--<div class="panel-body">-->
+                                <!--&lt;!&ndash;<canvas class="chart chart-line" chart-data="RC_FAILURE.data"&ndash;&gt;-->
+                                        <!--&lt;!&ndash;chart-labels="RC_FAILURE.labels" chart-series="RC_FAILURE.series" chart-colours="RC_FAILURE.colours" >&ndash;&gt;-->
+                                <!--&lt;!&ndash;</canvas>&ndash;&gt;-->
+                                <!--<nvd3 options="RC_FAILURE.options" data="RC_FAILURE.data"></nvd3>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="row">-->
+                    <!--<div class="col-md-6">-->
+                        <!--<div class="panel panel-default">-->
+                            <!--&lt;!&ndash; Default panel contents &ndash;&gt;-->
+                            <!--<div class="panel-heading">Energy</div>-->
+                            <!--<div class="panel-body">-->
+                                <!--&lt;!&ndash;<canvas class="chart chart-line" chart-data="energy.data"&ndash;&gt;-->
+                                        <!--&lt;!&ndash;chart-labels="energy.labels" chart-series="energy.series" chart-colours="energy.colours" >&ndash;&gt;-->
+                                <!--&lt;!&ndash;</canvas>&ndash;&gt;-->
+                                <!--<nvd3 options="energy.options" data="energy.data"></nvd3>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="col-md-6">-->
+                        <!--<div class="panel panel-default">-->
+                            <!--&lt;!&ndash; Default panel contents &ndash;&gt;-->
+                            <!--<div class="panel-heading">Vibration</div>-->
+                            <!--<div class="panel-body">-->
+                                <!--&lt;!&ndash;<canvas class="chart chart-line" chart-data="vibration.data"&ndash;&gt;-->
+                                        <!--&lt;!&ndash;chart-labels="vibration.labels" chart-series="vibration.series" chart-colours="vibration.colours" >&ndash;&gt;-->
+                                <!--&lt;!&ndash;</canvas>&ndash;&gt;-->
+                                <!--<nvd3 options="vibration.options" data="vibration.data"></nvd3>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="row">-->
+                    <!--<div class="col-md-6">-->
+                        <!--<div class="panel panel-default">-->
+                            <!--&lt;!&ndash; Default panel contents &ndash;&gt;-->
+                            <!--<div class="panel-heading">Humidity</div>-->
+                            <!--<div class="panel-body">-->
+                                <!--&lt;!&ndash;<canvas class="chart chart-line" chart-data="temperature.data"&ndash;&gt;-->
+                                        <!--&lt;!&ndash;chart-labels="temperature.labels" chart-series="temperature.series" chart-colours="temperature.colours" >&ndash;&gt;-->
+                                <!--&lt;!&ndash;</canvas>&ndash;&gt;-->
+                                <!--<nvd3 options="humidity.options" data="humidity.data"></nvd3>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="col-md-6">-->
+                        <!--<div class="panel panel-default">-->
+                            <!--&lt;!&ndash; Default panel contents &ndash;&gt;-->
+                            <!--<div class="panel-heading">Temperature</div>-->
+                            <!--<div class="panel-body">-->
+                                <!--&lt;!&ndash;<canvas class="chart chart-line" chart-data="temperature.data"&ndash;&gt;-->
+                                <!--&lt;!&ndash;chart-labels="temperature.labels" chart-series="temperature.series" chart-colours="temperature.colours" >&ndash;&gt;-->
+                                <!--&lt;!&ndash;</canvas>&ndash;&gt;-->
+                                <!--<nvd3 options="temperature.options" data="temperature.data"></nvd3>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->

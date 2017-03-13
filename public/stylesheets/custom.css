@@ -1,0 +1,13 @@
+.applications .panel {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, .05);
+}
+
+.app {
+    cursor: pointer;
+    min-height: 240px;
+}
+
+.app .panel-body {
+    text-align: center;
+    padding-top: 15%;
+}

@@ -1,0 +1,21 @@
+body {
+    background: url("../../images/sporka_olbrachtova.jpg");
+    background-size: cover;
+    -moz-background-size: cover;
+}
+
+.health-good {
+    color: green;
+}
+
+.health-warning {
+    color: orange;
+}
+
+.health-poor {
+    color: red;
+}
+
+.navbar-brand img {
+    width: 7em;
+}

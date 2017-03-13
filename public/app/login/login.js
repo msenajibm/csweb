@@ -22,7 +22,7 @@ angular.module('login', ['ui.router'])
             logIn()
                 .then(function(){
                     toastr.success("Hello ", "Login successful");
-                    $state.go('welcome');
+                    $state.go('dashboard.overview');
                 })
                 .catch(function(err){
                     toastr.error(err.data, "Authentication failed");
@@ -34,23 +34,11 @@ angular.module('login', ['ui.router'])
          * @return {HttpPromise}
          */
         function logIn(){
-            if( !isMockApi ){
-                return $http.post( baseUrl + '/login',
-                    $scope.UserCreds,
-                    {
-                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                        // withCredentials: true,
-                        transformRequest: function(obj) {
-                            var str = [];
-                            for(var p in obj)
-                                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-                            return str.join("&");
-                        }
-                    }
-                )
+
+            if ($scope.UserCreds.UserName === "msenaj") {
+                return $q.resolve({data:{}});
             } else {
                 return $q.reject({data:{}});
-                // return $q.resolve({data:{}});
             }
         }
 

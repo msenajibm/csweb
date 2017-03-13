@@ -6,11 +6,17 @@ angular.module('myApp', [
     'ui.router',
     'ui.select',
     'ui.bootstrap',
-    'login'
+    'mgcrea.ngStrap',
+    'gridstack-angular',
+    'login',
+    'dashboard',
+    'details',
+    'overview',
+    'repositories'
 ])
     .config(['$urlRouterProvider', function ($urlRouterProvider) {
 
         $urlRouterProvider.otherwise('/login');
     }])
-    .constant('isMockApi', true)
-    .constant('baseUrl', 'localhost:6002');
+    .constant('isMockApi', false)
+    .constant('baseUrl', 'http://localhost:3000');
