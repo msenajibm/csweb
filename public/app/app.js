@@ -18,4 +18,4 @@ angular.module('myApp', [
         $urlRouterProvider.otherwise('/login');
     }])
     .constant('isMockApi', false)
-    .constant('baseUrl', 'http://localhost:3000');
+    .constant('baseUrl', 'https://csloans.mybluemix.net');
